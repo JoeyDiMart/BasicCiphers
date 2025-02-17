@@ -3,43 +3,34 @@ Joseph DiMartino
 CSC330: Caesar Cipher program
 2.11.2025
 '''
-def encrypt():
-    numBits = int(input("7 or 8 bit ASCII?"))
-    if numBits == 7 or numBits == 8:
-        plainText = input("The plaintext: ")
-        ascii = [ord(char) for char in plainText]
-        binString = ''
-        for char in ascii:
-            if (char < 0 or char > 127) and numBits == 7: # ignore unknown characters
-                
-            binary = bin(char)[2:]
-            binary = binary.zfill(numBits)
-            binString += binary
-            binString += " "
-
-        print(binString)
-
-
-    else:
-        return "Re-run: invalid bits"
-
-def decrypt():
+import os
+def encrypt(num_bits, inp):
+    pass
+def decrypt(num_bits, inp):
     pass
 
 def main():
-    inp = input("Encrypt or Decrypt (E / D): ")
-    r = True
-    while r:
-        if  inp.upper() == "E":
-            encrypt()
-        elif inp.upper() == "D":
-            decrypt()
-        r = False
+    cryptograph = input("Encrypt or Decrypt (E / D): ").upper()
+    num_bits = input("7 / 8 bit ascii or unknown (7 / 8 / U): ").upper()
+    input_type = input("Type input or Read from file (T / R): ").upper()
 
 
+    if input_type == "T":
+        inp = input("Enter the text: ")
+    elif input_type == "R":
+        file_path = os.path.expanduser("~/Desktop/CSC330Files/inputs/")
+        file_name = os.path.join(file_path, input("Enter file name: "))
+        try:
+            with open(file_name, "r") as file:
+                inp = file.read()
+                print("File content:\n", inp)
+        except FileNotFoundError:
+            print("Error: File not found.")
 
-
-
+    if cryptograph == "E":
+        encrypt(num_bits, inp)
+    else:
+        decrypt(num_bits, inp)
 
 
 if __name__ == "__main__":
