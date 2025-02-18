@@ -1,6 +1,6 @@
 '''
 Joseph DiMartino
-CSC330: Caesar Cipher program
+CSC330: Binary Cipher program
 2.11.2025
 '''
 import os
