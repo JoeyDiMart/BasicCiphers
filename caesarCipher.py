@@ -32,7 +32,6 @@ def decrypt(num_bits, inp):
 def main(output_file, cryptograph, num_bits, input_type):
 
     if input_type == "T":
-        inp = input("Enter the text: ")
         shift = int(input("Enter how much the shift should be: "))
         alphabet_type = input("All printable chars, upper only, or Aa-Zz (A, U, O): ")
         alph = {
