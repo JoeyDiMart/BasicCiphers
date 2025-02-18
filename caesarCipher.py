@@ -3,58 +3,100 @@ Joseph DiMartino
 CSC330: Caesar Cipher program
 '''
 import os
-long_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*(),.?/'
-upper_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-all_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+#long_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*(),.?/'
+#upper_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+#all_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 
 
-def encrypt(num_bits, inp, shift, alphabet):
-    cipher_text = ''
-    if num_bits == 7:
-        max_val = 127
+def encrypt(inp, shift, alphabet):
+    length = len(alphabet)
+    if shift is None or shift == "000":  # Will try all possible shifts
+        cipher_list = []
+        for shift in range(1, length):
+            cipher_text = ""
+            for i in inp:
+                if i in alphabet:
+                    cipher_text += alphabet[(alphabet.index(i) + shift) % length]
+                else:
+                    cipher_text += i
+            cipher_list.append(cipher_text)
+        return cipher_list
+
     else:
-        max_val = 255
-    for char in inp:
-        if char in alphabet:
-            ord_value = ord(char)
-            shifted_value = (ord_value + shift) % (max_val + 1)
-            cipher_text += chr(shifted_value)
-        else:
-            cipher_text += char
-
-    return cipher_text
+        cipher_text = ""
+        for i in inp:
+            if i in alphabet:
+                cipher_text += alphabet[(alphabet.index(i) + shift) % length]
+            else:
+                cipher_text += i
+        return cipher_text
 
 
-def decrypt(num_bits, inp):
-    pass
+def decrypt(inp, shift, alphabet):
+    length = len(alphabet)
+
+    if shift == "000":  # Try all possible shifts
+        plaintext_list = []
+        for shift in range(1, length):
+            plain_text = ""
+            for i in inp:
+                if i in alphabet:
+                    plain_text += alphabet[(alphabet.index(i) - shift) % length]
+                else:
+                    plain_text += i
+            plaintext_list.append(plain_text)
+        return plaintext_list
+
+    else:  # Decrypt with a specific shift
+        plain_text = ""
+        for i in inp:
+            if i in alphabet:
+                plain_text += alphabet[(alphabet.index(i) - shift) % length]
+            else:
+                plain_text += i
+        return plain_text
 
 
-def main(output_file, cryptograph, num_bits, input_type):
+def main(output_file, cryptograph, input_type):
+    selected_alphabet = input("Enter the Alphabet: ")
 
     if input_type == "T":
-        shift = int(input("Enter how much the shift should be: "))
-        alphabet_type = input("All printable chars, upper only, or Aa-Zz (A, U, O): ")
-        alph = {
-            "A": long_alphabet,
-            "U": upper_alphabet,
-            "O": all_alphabet
-        }
-        selected_alphabet = alph[alphabet_type]
+        inp = input("Enter the text: ")
+        shift = input("Enter how much the shift should be (# / 000): ")
+        shift = int(shift) if shift != "000" else "000"
 
-        result = encrypt(num_bits, inp, shift, selected_alphabet) if cryptograph == "E" else decrypt(num_bits, inp)
+        result = encrypt(inp, shift, selected_alphabet) if cryptograph == "E" else decrypt(inp, shift,
+                                                                                           selected_alphabet)
+
         with open(output_file, "w") as out_file:
-            out_file.write(result)
+            if isinstance(result, list):
+                out_file.write("\n".join(result))
+            else:
+                out_file.write(result)
 
     elif input_type == "R":
         file_path = os.path.expanduser("~/Desktop/CSC330Files/inputs/")
         file_name = os.path.join(file_path, input("Enter file name: "))
+
         try:
             with open(file_name, "r") as file, open(output_file, "w") as out_file:
                 while True:
-                    chunk = file.read(1024 * 1024) # read 1MB at a time just in case of large files
+                    chunk = file.read(1024 * 1024)  # Read 1MB at a time
                     if not chunk:
                         break
-                    processed_chunk = encrypt(num_bits, chunk) if cryptograph == "E" else decrypt(num_bits, chunk)
-                    out_file.write(processed_chunk)
+
+                    shift = input("Enter how much the shift should be (# / 000): ") if cryptograph == "E" else "000"
+                    shift = int(shift) if shift != "000" else "000"
+
+                    processed_chunk = encrypt(chunk, shift, selected_alphabet) if cryptograph == "E" else decrypt(chunk,
+                                                                                                                  shift,
+                                                                                                                  selected_alphabet)
+
+                    if isinstance(processed_chunk, list):
+                        out_file.write("\n".join(processed_chunk))
+                    else:
+                        out_file.write(processed_chunk)
+
         except FileNotFoundError:
             print("Error: File not found.")
+
