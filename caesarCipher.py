@@ -8,7 +8,7 @@ import os
 #all_alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 
 
-def encrypt(inp, shift, alphabet):
+def encrypt(inp, shift, alphabet): # encryption (either by specified or all shifts)
     length = len(alphabet)
     if shift is None or shift == "000":  # Will try all possible shifts
         cipher_list = []
@@ -57,19 +57,20 @@ def decrypt(inp, shift, alphabet):
         return plain_text
 
 
+# main method to run everything
 def main(output_file, cryptograph, input_type):
-    selected_alphabet = input("Enter the Alphabet: ")
+    selected_alphabet = input("Enter the Alphabet: ")  # User chooses the alphabet size
 
     if input_type == "T":
         inp = input("Enter the text: ")
         shift = input("Enter how much the shift should be (# / 000): ")
-        shift = int(shift) if shift != "000" else "000"
+        shift = int(shift) if shift != "000" else "000"  # set up to handle unspecified shifts (000)
 
         result = encrypt(inp, shift, selected_alphabet) if cryptograph == "E" else decrypt(inp, shift,
                                                                                            selected_alphabet)
 
         with open(output_file, "w") as out_file:
-            if isinstance(result, list):
+            if isinstance(result, list):  # chcek if trying to write a list
                 out_file.write("\n".join(result))
             else:
                 out_file.write(result)
@@ -92,7 +93,7 @@ def main(output_file, cryptograph, input_type):
                                                                                                                   shift,
                                                                                                                   selected_alphabet)
 
-                    if isinstance(processed_chunk, list):
+                    if isinstance(processed_chunk, list):  # check if trying to write a list
                         out_file.write("\n".join(processed_chunk))
                     else:
                         out_file.write(processed_chunk)
