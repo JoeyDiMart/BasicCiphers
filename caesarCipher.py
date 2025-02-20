@@ -38,7 +38,7 @@ def decrypt(inp, shift, alphabet):
     if shift == "000":  # Try all possible shifts
         plaintext_list = []
         for shift in range(1, length):
-            plain_text = ""
+            plain_text = f"Shift: {shift}:"
             for i in inp:
                 if i in alphabet:
                     plain_text += alphabet[(alphabet.index(i) - shift) % length]
@@ -70,7 +70,7 @@ def main(output_file, cryptograph, input_type):
                                                                                            selected_alphabet)
 
         with open(output_file, "w") as out_file:
-            if isinstance(result, list):  # chcek if trying to write a list
+            if isinstance(result, list):  # check if trying to write a list
                 out_file.write("\n".join(result))
             else:
                 out_file.write(result)
