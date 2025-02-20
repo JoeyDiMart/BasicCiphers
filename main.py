@@ -12,7 +12,7 @@ output_path = os.path.expanduser("~/Desktop/CSC330Files/outputs/")
 
 while True:
     output_file = os.path.join(output_path, input("Enter output file name (Q): "))
-    cipher = input("enter which ciper (binary, caesar, Q): ").lower()
+    cipher = input("enter which ciper (binary, caesar, vigenere, Q): ").lower()
     cryptograph = input("Encrypt or Decrypt (E / D): ").upper()
 
     input_type = input("Type input or Read from file (T / R): ").upper()

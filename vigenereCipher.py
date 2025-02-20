@@ -28,6 +28,9 @@ def decrypt(inp, key, alphabet):
         if i in alphabet:
             plain_text += alphabet[(alphabet.index(i) - key[j]) % length]
             j = (j + 1) % key_len
+        elif i == "\n":
+            plain_text += "\n"
+            j = 0
         else:
             plain_text += i
     return plain_text
@@ -42,9 +45,6 @@ def main(output_file, cryptograph, input_type):
         if i in selected_alphabet:
             #key_shifts.append(ord(i) - ord(start_alphabet))
             key_shifts.append(selected_alphabet.index(i))
-
-    print(key_shifts)
-
     if input_type == "T":
         inp = input("Enter the text: ")
 
