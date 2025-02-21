@@ -5,6 +5,7 @@ CSC330: Vigenere Cipher program
 import os
 
 
+# function to encrypt (but probably not needed)
 def encrypt(inp, key, alphabet):
     cipher_text = ""
     length = len(alphabet)
@@ -19,6 +20,7 @@ def encrypt(inp, key, alphabet):
     return cipher_text
 
 
+# very similar to caesar, just shift by alphabet - key
 def decrypt(inp, key, alphabet):
     plain_text = ""
     length = len(alphabet)
@@ -30,7 +32,7 @@ def decrypt(inp, key, alphabet):
             j = (j + 1) % key_len
         elif i == "\n":
             plain_text += "\n"
-            j = 0
+            j = 0  # resets when a new line appears
         else:
             plain_text += i
     return plain_text
@@ -50,31 +52,27 @@ def main(output_file, cryptograph, input_type):
 
         result = encrypt(inp, key_shifts, selected_alphabet) if cryptograph == "E" else decrypt(inp, key_shifts, selected_alphabet)
 
-        with open(output_file, "w") as out_file:
-            if isinstance(result, list):  # check if trying to write a list
-                out_file.write("\n".join(result))
-            else:
-                out_file.write(result)
+
 
     elif input_type == "R":
         file_path = os.path.expanduser("~/Desktop/CSC330Files/inputs/")
         file_name = os.path.join(file_path, input("Enter file name: "))
 
         try:
-            with open(file_name, "r") as file, open(output_file, "w") as out_file:
+            with open(file_name, "r") as file:
                 while True:
-                    chunk = file.read(1024 * 1024)  # Read 1MB at a time
+                    chunk = file.read(1024 * 1024)  # Read 1MB at a time, got this from chatGPT
                     if not chunk:
                         break
 
-                    processed_chunk = encrypt(chunk, key_shifts, selected_alphabet) if cryptograph == "E" else decrypt(chunk,
-                                                                                                                       key_shifts,
-                                                                                                                        selected_alphabet)
-
-                    if isinstance(processed_chunk, list):  # check if trying to write a list
-                        out_file.write("\n".join(processed_chunk))
-                    else:
-                        out_file.write(processed_chunk)
-
+                    result = encrypt(chunk, key_shifts, selected_alphabet) if cryptograph == "E" else decrypt(chunk,
+                                                                                                        key_shifts,
+                                                                                                              selected_alphabet)
         except FileNotFoundError:
             print("Error: File not found.")
+
+    with open(output_file, "w") as out_file:
+        if isinstance(result, list):  # check if trying to write a list
+            out_file.write("\n".join(result))
+        else:
+            out_file.write(result)
