@@ -5,14 +5,14 @@ CSC330: XOR Cipher
 import os
 
 
-def XOR(inp, key):
+def XOR(inp, key):  # xor has same encryption and decrpyion
     key_length = len(key)
 
     # https: // stackoverflow.com / questions / 4019837 / what - do - we - mean - by - byte - array
     cipher_array = bytearray()  # got a byte array idea from chatGPT, this is apparently mroe efficient
 
     for index, byte in enumerate(inp):
-        cipher_array.append(byte ^ key[index % key_length])
+        cipher_array.append(byte ^ key[index % key_length]) # ^ is the xor function in python
 
     return bytes(cipher_array)
 
