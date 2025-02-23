@@ -32,7 +32,7 @@ def decrypt(inp, key, alphabet):
             j = (j + 1) % key_len
         elif i == "\n":
             plain_text += "\n"
-            j = 0  # resets when a new line appears
+            #j = 0  # resets when a new line appears
         else:
             plain_text += i
     return plain_text
@@ -40,13 +40,14 @@ def decrypt(inp, key, alphabet):
 
 def main(output_file, cryptograph, input_type):
     selected_alphabet = input("Enter the Alphabet: ")
-    key = input("Enter a key: ")
-    key_shifts = []
-    #start_alphabet = selected_alphabet[0]
-    for i in key: # did upper since the shift from 'i to a' is the same as 'I to A'
-        if i in selected_alphabet:
-            #key_shifts.append(ord(i) - ord(start_alphabet))
-            key_shifts.append(selected_alphabet.index(i))
+    key_shifts = [15, 24, 1, 6, 24, 3, 7, 6]
+    #key = input("Enter a key: ")
+    #key_shifts = []
+    start_alphabet = selected_alphabet[0]
+    #for i in key: # did upper since the shift from 'i to a' is the same as 'I to A'
+    #    if i in selected_alphabet:
+    #        #key_shifts.append(ord(i) - ord(start_alphabet))
+    #        key_shifts.append(selected_alphabet.index(i))
     if input_type == "T":
         inp = input("Enter the text: ")
 
